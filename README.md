@@ -1,10 +1,16 @@
-# HHGoa — TigerGraph Agentic Fraud Investigation Agent
+# 🐅 HHGoa — TigerGraph Agentic Fraud Investigation Agent
 
-An agentic fraud investigation system built for the **Hacker House Goa 2026** hackathon by TigerGraph. The agent takes 20 case-pack alerts from the IEEE-CIS fraud dataset, investigates them using a TigerGraph knowledge graph + GraphRAG, and produces scored answer files.
+![TigerGraph](https://img.shields.io/badge/TigerGraph-Hackathon-orange) ![Python](https://img.shields.io/badge/Python-3.12-blue) ![LangGraph](https://img.shields.io/badge/LangGraph-Agentic-green)
 
-## Architecture
+An autonomous agentic fraud investigation system built for the **Hacker House Goa 2026** hackathon by TigerGraph. 
 
-```
+This agent processes complex case-pack alerts from the IEEE-CIS fraud dataset, autonomously investigates them using a TigerGraph knowledge graph and GraphRAG, strictly enforces organizational policies, and produces highly explainable investigation reports.
+
+## 🧠 Architecture
+
+The system uses a state-machine architecture powered by **LangGraph** to ensure deterministic, auditable, and reliable investigations.
+
+```text
                     ┌─────────────────────────────┐
                     │   Benchmark Runner            │
                     │   (run_all.py)                │
@@ -33,7 +39,14 @@ An agentic fraud investigation system built for the **Hacker House Goa 2026** ha
           └──────────────────────────────────────┘
 ```
 
-## Quick Start
+### 🧩 Core Components
+
+1. **Agent Orchestrator**: A cyclic directed graph that steps through the investigation lifecycle.
+2. **Policy Engine**: A deterministic rule engine ensuring all actions comply with organizational rules (R1-R10), approval routing constraints, and whitelists.
+3. **Evidence Loop**: An autonomous sub-routine where the agent evaluates if it has enough data to make a decision, requesting deeper graph traversals if necessary.
+4. **Data Layer**: A scalable interface that interacts with TigerGraph for deep multi-hop relationship queries (e.g., shared devices, IP velocity, identity rings).
+
+## 🚀 Quick Start
 
 ### 1. Install dependencies
 
@@ -45,7 +58,7 @@ pip install -r requirements.txt
 
 ```bash
 cp .env.example .env
-# Edit .env with your API keys
+# Edit .env with your API keys (e.g., OPENROUTER_API_KEY)
 ```
 
 ### 3. Place the dataset
@@ -56,31 +69,26 @@ Ensure the IEEE-CIS dataset files are in the `HHGOA_IEEE/` directory alongside t
 - `closed_cases_history.csv` (5,565 closed cases)
 - `case_pack.csv` (20 exam cases)
 
-### 4. Run a single case
+### 4. Run Investigations
 
+**Run a single case:**
 ```bash
 python -m agent.orchestrator HHG-001
 ```
 
-### 5. Run all 20 cases
-
+**Run all 20 benchmark cases:**
 ```bash
 python -m benchmark.run_all
 ```
 
-### 6. Validate answer files
-
+**Validate output schemas:**
 ```bash
 python -m benchmark.answer_schema benchmark/cases/
 ```
 
-### 7. Self-score
+## 🐅 TigerGraph Integration (Optional)
 
-```bash
-python -m benchmark.scorer benchmark/cases/
-```
-
-## With TigerGraph (optional for enhanced performance)
+For enhanced performance and true multi-hop pattern detection, run the agent with a live TigerGraph instance:
 
 ```bash
 # Start TigerGraph CE
@@ -90,9 +98,9 @@ docker compose up -d tigergraph
 docker exec -it hhgoa-tigergraph gsql -g FraudGraph < graph/schema.gsql
 ```
 
-## Project Structure
+## 📂 Project Structure
 
-```
+```text
 hhgoa-fraud-agent/
 ├── agent/                   # Core investigation agent
 │   ├── orchestrator.py      # LangGraph state machine
@@ -105,45 +113,27 @@ hhgoa-fraud-agent/
 │   │   ├── gather_more.py   # Evidence request loop
 │   │   ├── take_action.py   # Policy-gated actions
 │   │   ├── explain.py       # Summary + SAR generation
-│   │   └── write_to_graph.py
+│   │   └── write_to_graph.py# Persistence 
 │   ├── tools/               # Graph query wrappers
 │   ├── policy/              # R1-R10 rules engine
 │   └── prompts/             # LLM prompt templates
 ├── graph/                   # TigerGraph schema + queries
-│   └── schema.gsql
-├── benchmark/               # Evaluation tools
-│   ├── run_all.py           # Run all 20 cases
-│   ├── answer_schema.py     # JSON schema validator
-│   ├── scorer.py            # Self-scoring harness
-│   └── cases/               # Generated answer files
-├── docs/                    # Documentation
-├── docker-compose.yml       # TigerGraph CE
-└── requirements.txt
+├── benchmark/               # Evaluation tools (runner, schema tests)
+├── docs/                    # Deep-dive documentation
+├── docker-compose.yml       # TigerGraph CE environment
+└── requirements.txt         # Python dependencies
 ```
 
-## Key Design Decisions
+## ⚖️ Key Design Decisions
 
 | Decision | Choice | Rationale |
 |---|---|---|
-| Agent framework | LangGraph (with sequential fallback) | Investigation flow is explicitly a state machine with conditional edges |
-| Graph database | TigerGraph CE via Docker | Full GSQL control, snapshot-able, free |
-| Data layer | Pandas with TigerGraph upgrade path | Works without TG for development; identical query interface |
-| LLM | Claude (Anthropic) with deterministic fallback | Agent runs without API key using heuristic assessment |
-| Policy enforcement | Deterministic code, not prompts | R1-R10 rules, action whitelist, and approval routing are hard-coded |
-| Answer format | Exact README schema | `answer_schema.py` validates every field before submission |
+| **Agent Framework** | LangGraph | Ensures the investigation flow is explicitly controlled via a state machine with conditional edges, avoiding infinite agent loops and ensuring auditable decision points. |
+| **Graph Database** | TigerGraph CE | Provides full GSQL control, enabling deep multi-hop queries that relational databases or Pandas cannot efficiently perform (e.g., finding fraudulent identity rings). |
+| **Data Layer Abstraction** | Dual Interface | Can gracefully fallback to Pandas for development without TigerGraph, while presenting an identical query interface to the agent. |
+| **LLM Assessment** | Deterministic Fallback | Agent can run without an API key using heuristic assessment for high-throughput baseline testing. |
+| **Policy Enforcement** | Hardcoded Logic | R1-R10 rules, action whitelists, and approval routing are strictly enforced by deterministic code, not prompts, to guarantee 100% policy compliance. |
 
-## Scoring
+## 📜 Attribution
 
-The self-scoring harness (`benchmark/scorer.py`) evaluates against the judging rubric:
-
-| Category | Weight | What's scored |
-|---|---|---|
-| Investigation accuracy | 25% | Evidence coverage, pattern detection, citation rate |
-| Next-best-action | 25% | Policy compliance, approval routing, pre/post actions |
-| Explainability | 10% | Evidence citations, summary quality, SAR narrative |
-| Agentic design | 15% | Evidence loop, decisions log, stop reasoning |
-| Completeness | 15% | Schema validity, graph write-back, field coverage |
-
-## Attribution
-
-IEEE-CIS Fraud Detection dataset, Vesta Corporation, via the IEEE Computational Intelligence Society. Extended by TigerGraph for Hacker House Goa 2026.
+Dataset based on the IEEE-CIS Fraud Detection dataset, Vesta Corporation, via the IEEE Computational Intelligence Society. Extended for Hacker House Goa 2026.
