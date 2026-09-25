@@ -1,0 +1,162 @@
+{
+  "case_id": "HHG-019",
+  "case": {
+    "status": "closed_fraud",
+    "verdict": "fraud",
+    "fraud_probability": 1.0,
+    "pattern": "none",
+    "pattern_description": "",
+    "affected_txn_ids": [
+      "3503878"
+    ],
+    "first_suspicious_txn_id": "3503878",
+    "connected_card_ids": [],
+    "connected_device_profiles": [
+      "Windows | other | chrome 61.0 | 1280x720"
+    ],
+    "exposure_usd": 99.92,
+    "evidence": [
+      {
+        "claim": "Flagged transaction 3503878: $99.92, channel=online, product=R, risk_score=0.9",
+        "source": "graph",
+        "ref": "query:get_transaction(txn_id=3503878)",
+        "entity_ids": [
+          "3503878"
+        ]
+      },
+      {
+        "claim": "Customer C07987: 248 total txns, avg $199.23, active 2016-07-03 00:38:45 to 2016-12-31 22:55:46, primary region 325.0",
+        "source": "graph",
+        "ref": "query:get_customer_profile(customer_id=C07987)",
+        "entity_ids": [
+          "C07987"
+        ]
+      },
+      {
+        "claim": "Card C07987-K2: 248 total transactions. Last 10 amounts: [$108.04, $58.91, $35.94, $22.02, $723.96, $150.02, $150.07, $108.02, $82.94, $33.92]",
+        "source": "graph",
+        "ref": "query:get_card_history(card_id=C07987-K2)",
+        "entity_ids": [
+          "C07987-K2"
+        ]
+      },
+      {
+        "claim": "Device profile for txn 3503878: Windows | other | chrome 61.0 | 1280x720. Device status: New. Proxy: none",
+        "source": "graph",
+        "ref": "query:get_device_info(txn_id=3503878)",
+        "entity_ids": [
+          "3503878"
+        ]
+      },
+      {
+        "claim": "Device 'Windows' also used by 4845 other customer(s): ['C03036', 'C01618', 'C11923', 'C10878', 'C03102']",
+        "source": "graph",
+        "ref": "query:find_device_neighbors(device=Windows)",
+        "entity_ids": [
+          "C03036",
+          "C01618",
+          "C11923",
+          "C10878",
+          "C03102"
+        ]
+      },
+      {
+        "claim": "Similar closed case CC-2011: confirmed_fraud (out_of_region_use), exposure $3059.89. Case CC-2011: cardholder C07987 reported unrecognized activity on card C07987-K2. 5 transaction(s) b",
+        "source": "graph",
+        "ref": "query:find_similar_cases(pattern=, customer=C07987)",
+        "entity_ids": [
+          "CC-2011"
+        ]
+      },
+      {
+        "claim": "Similar closed case CC-2087: cleared (none), exposure $0.00. Case CC-2087: model scored a $150.00 transaction at 0.94. Cardholder confirmed travel to the billing",
+        "source": "graph",
+        "ref": "query:find_similar_cases(pattern=, customer=C07987)",
+        "entity_ids": [
+          "CC-2087"
+        ]
+      },
+      {
+        "claim": "Similar closed case CC-2860: confirmed_fraud (card_not_present_fraud), exposure $149.92. Case CC-2860: cardholder C07987 reported unrecognized activity on card C07987-K2. 1 transaction(s) b",
+        "source": "graph",
+        "ref": "query:find_similar_cases(pattern=, customer=C07987)",
+        "entity_ids": [
+          "CC-2860"
+        ]
+      },
+      {
+        "claim": "Similar closed case CC-5026: confirmed_fraud (out_of_region_use), exposure $309.86. Case CC-5026: cardholder C07987 reported unrecognized activity on card C07987-K2. 3 transaction(s) b",
+        "source": "graph",
+        "ref": "query:find_similar_cases(pattern=, customer=C07987)",
+        "entity_ids": [
+          "CC-5026"
+        ]
+      }
+    ],
+    "similar_prior_cases": [
+      "CC-2011",
+      "CC-2087",
+      "CC-2860",
+      "CC-5026"
+    ],
+    "summary": "Risk model flagged transaction 3503878 at score 0.9 ($99.92, online) on card C07987-K2. Key evidence: Flagged transaction 3503878: $99.92, channel=online, product=R, risk_score=0.9 Similar prior case(s) retrieved: CC-2011, CC-2087, CC-2860. Verdict: fraud (fraud probability 1.00).",
+    "written_to_graph": true,
+    "graph_case_id": "CASE-HHG-019"
+  },
+  "evidence_requests": [],
+  "next_best_actions": {
+    "initial": [
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "§3a: fraud probability 1.00 ≥ 0.3"
+      },
+      {
+        "action": "FILE_REPORT",
+        "route": "L2",
+        "reason": "§3a: confirmed/strongly suspected fraud meets filing criteria"
+      },
+      {
+        "action": "BLOCK_CARD",
+        "route": "L1",
+        "reason": "Fraud confirmed with high probability"
+      }
+    ],
+    "final": [
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "§3a: fraud probability 1.00 ≥ 0.3"
+      },
+      {
+        "action": "FILE_REPORT",
+        "route": "L2",
+        "reason": "§3a: confirmed/strongly suspected fraud meets filing criteria"
+      },
+      {
+        "action": "BLOCK_CARD",
+        "route": "L1",
+        "reason": "Fraud confirmed with high probability"
+      }
+    ],
+    "what_changed": "nothing"
+  },
+  "sar": {
+    "file": true,
+    "reason": "§3a: confirmed/strongly suspected fraud meets filing criteria",
+    "narrative": "On 2016-12-01 17:28:53, card C07987-K2 belonging to customer C07987 was used for a online transaction of $99.92. A total of 1 transaction(s) were identified as part of this fraud episode, totaling $99.92. The following device profile(s) link this activity: Windows | other | chrome 61.0 | 1280x720. Recommended actions: CREATE_CASE, FILE_REPORT, BLOCK_CARD.",
+    "subjects": [
+      "C07987",
+      "C07987-K2"
+    ],
+    "total_amount_usd": 99.92,
+    "activity_dates": [
+      "2016-12-01",
+      "2016-12-01"
+    ]
+  },
+  "stop_reason": "Fraud probability 1.00 ≥ 0.85 with 9 independent evidence pieces",
+  "tool_calls": 12,
+  "tokens": 0,
+  "latency_s": 12.2
+}

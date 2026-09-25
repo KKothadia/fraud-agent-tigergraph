@@ -1,0 +1,133 @@
+{
+  "case_id": "HHG-003",
+  "case": {
+    "status": "closed_fraud",
+    "verdict": "fraud",
+    "fraud_probability": 0.85,
+    "pattern": "none",
+    "pattern_description": "",
+    "affected_txn_ids": [
+      "3530164"
+    ],
+    "first_suspicious_txn_id": "3530164",
+    "connected_card_ids": [],
+    "connected_device_profiles": [],
+    "exposure_usd": 49.0,
+    "evidence": [
+      {
+        "claim": "Flagged transaction 3530164: $49.00, channel=in_person, product=W, risk_score=0.4",
+        "source": "graph",
+        "ref": "query:get_transaction(txn_id=3530164)",
+        "entity_ids": [
+          "3530164"
+        ]
+      },
+      {
+        "claim": "Customer C08623: 1140 total txns, avg $129.36, active 2016-07-06 14:31:05 to 2016-12-31 20:11:09, primary region 299.0",
+        "source": "graph",
+        "ref": "query:get_customer_profile(customer_id=C08623)",
+        "entity_ids": [
+          "C08623"
+        ]
+      },
+      {
+        "claim": "Card C08623-K2: 1140 total transactions. Last 10 amounts: [$46.02, $92.00, $57.92, $306.91, $107.88, $108.00, $59.03, $59.07, $165.02, $90.05]",
+        "source": "graph",
+        "ref": "query:get_card_history(card_id=C08623-K2)",
+        "entity_ids": [
+          "C08623-K2"
+        ]
+      },
+      {
+        "claim": "Similar closed case CC-1589: cleared (none), exposure $0.00. Case CC-1589: model scored a $99.91 transaction at 0.94. Cardholder confirmed travel to the billing ",
+        "source": "graph",
+        "ref": "query:find_similar_cases(pattern=, customer=C08623)",
+        "entity_ids": [
+          "CC-1589"
+        ]
+      },
+      {
+        "claim": "Similar closed case CC-2817: confirmed_fraud (out_of_region_use), exposure $38.96. Case CC-2817: cardholder C08623 reported unrecognized activity on card C08623-K2. 1 transaction(s) b",
+        "source": "graph",
+        "ref": "query:find_similar_cases(pattern=, customer=C08623)",
+        "entity_ids": [
+          "CC-2817"
+        ]
+      },
+      {
+        "claim": "Similar closed case CC-2935: confirmed_fraud (out_of_region_use), exposure $238.00. Case CC-2935: cardholder C08623 reported unrecognized activity on card C08623-K2. 2 transaction(s) b",
+        "source": "graph",
+        "ref": "query:find_similar_cases(pattern=, customer=C08623)",
+        "entity_ids": [
+          "CC-2935"
+        ]
+      },
+      {
+        "claim": "Similar closed case CC-3327: confirmed_fraud (account_takeover), exposure $528.69. Case CC-3327: cardholder C08623 reported unrecognized activity on card C08623-K2. 3 transaction(s) b",
+        "source": "graph",
+        "ref": "query:find_similar_cases(pattern=, customer=C08623)",
+        "entity_ids": [
+          "CC-3327"
+        ]
+      },
+      {
+        "claim": "Similar closed case CC-3682: confirmed_fraud (out_of_region_use), exposure $300.51. Case CC-3682: cardholder C08623 reported unrecognized activity on card C08623-K2. 2 transaction(s) b",
+        "source": "graph",
+        "ref": "query:find_similar_cases(pattern=, customer=C08623)",
+        "entity_ids": [
+          "CC-3682"
+        ]
+      }
+    ],
+    "similar_prior_cases": [
+      "CC-1589",
+      "CC-2817",
+      "CC-2935",
+      "CC-3327",
+      "CC-3682"
+    ],
+    "summary": "The verdict classified case HHG-003 as fraud with a probability of 0.85, and no distinct fraud pattern was identified (Pattern: none). Key evidence includes the flagged in‑person transaction 3530164 for $49.00 with a risk score of 0.4 (query:get_transaction(txn_id=3530164)) and the series of similar closed cases CC‑2817, CC‑2935, CC‑3327, and CC‑3682, each confirming out‑of‑region use or account takeover for cardholder C08623 (query:find_similar_cases). The cardholder’s profile (C08623) shows 1140 total transactions averaging $129.36 and a card history (C08623‑K2) with recent amounts such as $46.02, $92.00, and $306.91 (query:get_card_history), indicating anomalous spending that aligns with the flagged transaction. Because evidence requests made were 0, the existing transaction and case data directly drove the fraud determination, leading to the recommended actions CREATE_CASE(auto) and BLOCK_CARD(L1).",
+    "written_to_graph": true,
+    "graph_case_id": "CASE-HHG-003"
+  },
+  "evidence_requests": [],
+  "next_best_actions": {
+    "initial": [
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "§3a: fraud probability 0.85 ≥ 0.3"
+      },
+      {
+        "action": "BLOCK_CARD",
+        "route": "L1",
+        "reason": "Fraud confirmed with high probability"
+      }
+    ],
+    "final": [
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "§3a: fraud probability 0.85 ≥ 0.3"
+      },
+      {
+        "action": "BLOCK_CARD",
+        "route": "L1",
+        "reason": "Fraud confirmed with high probability"
+      }
+    ],
+    "what_changed": "nothing"
+  },
+  "sar": {
+    "file": false,
+    "reason": "Filing not required: verdict is fraud with fraud probability 0.85. Exposure $49.00 below threshold and no shared device links.",
+    "narrative": "",
+    "subjects": [],
+    "total_amount_usd": 0,
+    "activity_dates": []
+  },
+  "stop_reason": "Fraud probability 0.85 ≥ 0.85 with 8 independent evidence pieces",
+  "tool_calls": 11,
+  "tokens": 0,
+  "latency_s": 58.8
+}

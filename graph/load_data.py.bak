@@ -1,0 +1,84 @@
+import os
+import pandas as pd
+import pyTigerGraph as tg
+from dotenv import load_dotenv
+
+def main():
+    load_dotenv()
+    
+    # 1. Connect to TigerGraph
+    print("Connecting to TigerGraph...")
+    conn = tg.TigerGraphConnection(
+        host=os.getenv("TG_HOST", "http://localhost"),
+        restppPort=os.getenv("TG_REST_PORT", "9000"),
+        username=os.getenv("TG_USERNAME", "tigergraph"),
+        password=os.getenv("TG_PASSWORD", "tigergraph")
+    )
+    
+    # Ensure graph exists
+    conn.graphname = os.getenv("TG_GRAPH_NAME", "FraudGraph")
+    try:
+        conn.apiToken = conn.getToken(conn.createSecret())
+    except Exception as e:
+        print(f"Failed to get token (Graph might not be fully initialized yet): {e}")
+        return
+
+    # 2. Setup paths
+    dataset_dir = os.getenv("DATASET_DIR", "../TASK 4/HHGOA_IEEE")
+    txns_path = os.path.join(dataset_dir, "transactions.csv")
+    identity_path = os.path.join(dataset_dir, "identity.csv")
+    closed_cases_path = os.path.join(dataset_dir, "closed_cases_history.csv")
+    
+    if not os.path.exists(txns_path):
+        print(f"Error: Could not find transactions.csv at {txns_path}")
+        return
+
+    # 3. Load Data in Chunks
+    print("Reading transactions.csv in chunks...")
+    chunk_size = 50000
+    
+    for i, chunk in enumerate(pd.read_csv(txns_path, low_memory=False, chunksize=chunk_size)):
+        print(f"Processing chunk {i+1}...")
+        
+        # Prepare Customer Vertices
+        customers = chunk[['customer_id', 'ts']].copy()
+        customers['customer_id'] = customers['customer_id'].astype(str)
+        customers = customers.groupby('customer_id').agg(
+            first_seen=('ts', 'min'),
+            last_seen=('ts', 'max'),
+            total_txn_count=('ts', 'count')
+        ).reset_index()
+        customers['risk_tier'] = 'normal'
+        customers['card_count'] = 1
+        
+        # Upsert Customers
+        conn.upsertVertexDataFrame(
+            df=customers, 
+            vertexType='Customer', 
+            v_id='customer_id', 
+            attributes={'first_seen':'first_seen', 'last_seen':'last_seen', 'total_txn_count':'total_txn_count', 'risk_tier':'risk_tier', 'card_count':'card_count'}
+        )
+        
+        # Prepare Transaction Vertices
+        txns = chunk.copy()
+        txns['TransactionID'] = txns['TransactionID'].astype(str)
+        txns['customer_id'] = txns['customer_id'].astype(str)
+        
+        # Select attributes that match the schema
+        # ... this script can be expanded later to map all 400 columns, for now just the core ones
+        core_cols = ['TransactionID', 'TransactionDT', 'TransactionAmt', 'ProductCD', 'addr1', 'addr2', 'customer_id', 'ts', 'channel', 'risk_score']
+        txns_core = txns[core_cols].fillna(0)
+        
+        conn.upsertVertexDataFrame(
+            df=txns_core,
+            vertexType='Transaction',
+            v_id='TransactionID',
+            attributes={k:k for k in core_cols if k != 'TransactionID'}
+        )
+        
+        print(f"Upserted {len(txns_core)} transactions.")
+        
+    print("Data loading complete!")
+
+if __name__ == "__main__":
+    main()

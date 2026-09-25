@@ -1,0 +1,211 @@
+// ============================================================================
+// HHGoa Fraud Investigation — TigerGraph Schema
+// Follows the README's suggested schema, extended with investigation vertices.
+// ============================================================================
+
+// ── Drop existing graph if re-creating ──────────────────────────────────────
+// DROP GRAPH FraudGraph
+// CREATE GRAPH FraudGraph()
+// USE GRAPH FraudGraph
+
+// ============================================================================
+// VERTEX TYPES
+// ============================================================================
+
+// Core entities from the dataset
+CREATE VERTEX Customer (
+    PRIMARY_ID customer_id STRING,
+    first_seen DATETIME,
+    last_seen DATETIME,
+    card_count INT DEFAULT 0,
+    total_txn_count INT DEFAULT 0,
+    risk_tier STRING DEFAULT "normal"
+) WITH primary_id_as_attribute="true"
+
+CREATE VERTEX Card (
+    PRIMARY_ID card_id STRING,
+    card1 INT,
+    card2 FLOAT,
+    card3 FLOAT,
+    card4 STRING,          // network: visa, mastercard, american express, discover
+    card5 FLOAT,
+    card6 STRING,          // type: credit, debit
+    first_seen DATETIME,
+    last_seen DATETIME,
+    txn_count INT DEFAULT 0
+) WITH primary_id_as_attribute="true"
+
+CREATE VERTEX Transaction (
+    PRIMARY_ID txn_id STRING,
+    TransactionDT FLOAT,
+    TransactionAmt FLOAT,
+    ProductCD STRING,       // W, C, H, R, S
+    addr1 FLOAT,            // billing region
+    addr2 FLOAT,            // billing country
+    dist1 FLOAT,
+    dist2 FLOAT,
+    P_emaildomain STRING,
+    R_emaildomain STRING,
+    // C columns (counts)
+    C1 FLOAT, C2 FLOAT, C3 FLOAT, C4 FLOAT, C5 FLOAT,
+    C6 FLOAT, C7 FLOAT, C8 FLOAT, C9 FLOAT, C10 FLOAT,
+    C11 FLOAT, C12 FLOAT, C13 FLOAT, C14 FLOAT,
+    // D columns (time deltas)
+    D1 FLOAT, D2 FLOAT, D3 FLOAT, D4 FLOAT, D5 FLOAT,
+    D6 FLOAT, D7 FLOAT, D8 FLOAT, D9 FLOAT, D10 FLOAT,
+    D11 FLOAT, D12 FLOAT, D13 FLOAT, D14 FLOAT, D15 FLOAT,
+    // M columns (match flags)
+    M1 STRING, M2 STRING, M3 STRING, M4 STRING, M5 STRING,
+    M6 STRING, M7 STRING, M8 STRING, M9 STRING,
+    // Added columns
+    customer_id STRING,
+    ts DATETIME,
+    channel STRING,         // "in_person" or "online"
+    risk_score FLOAT
+) WITH primary_id_as_attribute="true"
+
+// Note: V1-V339 are not stored as vertex attributes due to count.
+// They are available in the raw CSV for feature analysis if needed.
+
+CREATE VERTEX DeviceProfile (
+    PRIMARY_ID device_profile_id STRING,
+    DeviceType STRING,      // "mobile" or "desktop"
+    DeviceInfo STRING,      // e.g. "SAMSUNG SM-G892A Build/NRD90M"
+    os STRING,              // id_30: e.g. "Android 7.0"
+    browser STRING,         // id_31: e.g. "samsung browser 6.2"
+    screen STRING,          // id_33: e.g. "2220x1080"
+    id_15 STRING,           // "New" or "Found"
+    id_23 STRING,           // proxy: "transparent", "anonymous", "hidden"
+    first_seen DATETIME,
+    txn_count INT DEFAULT 0
+) WITH primary_id_as_attribute="true"
+
+CREATE VERTEX EmailDomain (
+    PRIMARY_ID domain STRING,
+    txn_count INT DEFAULT 0
+) WITH primary_id_as_attribute="true"
+
+CREATE VERTEX BillingRegion (
+    PRIMARY_ID region_code STRING,
+    txn_count INT DEFAULT 0
+) WITH primary_id_as_attribute="true"
+
+// Closed cases from history (case memory)
+CREATE VERTEX ClosedCase (
+    PRIMARY_ID case_id STRING,
+    customer_id STRING,
+    card_id STRING,
+    opened_at DATETIME,
+    closed_at DATETIME,
+    outcome STRING,         // "confirmed_fraud" or "cleared"
+    pattern STRING,         // one of the 5 patterns, "undocumented", or "none"
+    first_fraud_txn_id STRING,
+    n_txns INT,
+    exposure_usd FLOAT,
+    actions_taken STRING,
+    report_filed STRING,
+    analyst_notes STRING
+) WITH primary_id_as_attribute="true"
+
+// Agent-created investigation case
+CREATE VERTEX FraudCase (
+    PRIMARY_ID case_id STRING,
+    status STRING,          // open, closed_fraud, closed_legitimate, escalated
+    verdict STRING,         // fraud, legitimate, uncertain
+    fraud_probability FLOAT,
+    pattern STRING,
+    pattern_description STRING,
+    exposure_usd FLOAT,
+    summary STRING,
+    created_at DATETIME,
+    closed_at DATETIME,
+    stop_reason STRING
+) WITH primary_id_as_attribute="true"
+
+// Known fraud patterns
+CREATE VERTEX FraudPattern (
+    PRIMARY_ID pattern_id STRING,
+    name STRING,
+    description STRING
+) WITH primary_id_as_attribute="true"
+
+
+// ============================================================================
+// EDGE TYPES
+// ============================================================================
+
+// Customer → Card ownership
+CREATE DIRECTED EDGE OWNS (
+    FROM Customer, TO Card
+) WITH REVERSE_EDGE="OWNED_BY"
+
+// Card → Transaction
+CREATE DIRECTED EDGE MADE (
+    FROM Card, TO Transaction
+) WITH REVERSE_EDGE="MADE_BY"
+
+// Transaction → DeviceProfile (online only)
+CREATE DIRECTED EDGE FROM_DEVICE (
+    FROM Transaction, TO DeviceProfile
+)
+
+// Transaction → EmailDomain
+CREATE DIRECTED EDGE PURCHASER_EMAIL (
+    FROM Transaction, TO EmailDomain
+)
+
+CREATE DIRECTED EDGE RECIPIENT_EMAIL (
+    FROM Transaction, TO EmailDomain
+)
+
+// Transaction → BillingRegion
+CREATE DIRECTED EDGE BILLED_IN (
+    FROM Transaction, TO BillingRegion
+)
+
+// Temporal ordering within a card (for sequence analysis)
+CREATE DIRECTED EDGE NEXT (
+    FROM Transaction, TO Transaction,
+    time_gap_seconds FLOAT
+)
+
+// Closed case edges
+CREATE DIRECTED EDGE INVOLVES (
+    FROM ClosedCase, TO Transaction
+)
+
+CREATE DIRECTED EDGE ON_CARD (
+    FROM ClosedCase, TO Card
+)
+
+CREATE DIRECTED EDGE CONNECTED_TO (
+    FROM ClosedCase, TO Card
+)
+
+// Agent-created case edges
+CREATE DIRECTED EDGE HAS_EVIDENCE_TXN (
+    FROM FraudCase, TO Transaction
+)
+
+CREATE DIRECTED EDGE CASE_ON_CARD (
+    FROM FraudCase, TO Card
+)
+
+CREATE DIRECTED EDGE CASE_FOR_CUSTOMER (
+    FROM FraudCase, TO Customer
+)
+
+CREATE DIRECTED EDGE MATCHES_PATTERN (
+    FROM FraudCase, TO FraudPattern,
+    confidence FLOAT
+)
+
+CREATE DIRECTED EDGE SIMILAR_TO (
+    FROM FraudCase, TO ClosedCase,
+    similarity_score FLOAT
+)
+
+// ============================================================================
+// GRAPH CREATION
+// ============================================================================
+

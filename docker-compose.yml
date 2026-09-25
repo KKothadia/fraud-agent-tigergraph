@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  # TigerGraph Community Edition
+  tigergraph:
+    image: tigergraph/tigergraph:latest
+    container_name: hhgoa-tigergraph
+    ports:
+      - "9000:9000"      # REST API
+      - "14240:14240"    # GraphStudio UI
+    volumes:
+      - tg_data:/home/tigergraph/mydata
+      - ./graph:/home/tigergraph/graph_scripts
+    environment:
+      - TZ=UTC
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/echo"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+volumes:
+  tg_data:

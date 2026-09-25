@@ -1,0 +1,133 @@
+{
+  "case_id": "HHG-007",
+  "case": {
+    "status": "closed_fraud",
+    "verdict": "fraud",
+    "fraud_probability": 0.9,
+    "pattern": "none",
+    "pattern_description": "",
+    "affected_txn_ids": [
+      "3514948"
+    ],
+    "first_suspicious_txn_id": "3514948",
+    "connected_card_ids": [],
+    "connected_device_profiles": [],
+    "exposure_usd": 111.92,
+    "evidence": [
+      {
+        "claim": "Flagged transaction 3514948: $111.92, channel=in_person, product=W, risk_score=0.87",
+        "source": "graph",
+        "ref": "query:get_transaction(txn_id=3514948)",
+        "entity_ids": [
+          "3514948"
+        ]
+      },
+      {
+        "claim": "Customer C09933: 2792 total txns, avg $123.85, active 2016-07-03 00:57:14 to 2016-12-31 23:57:27, primary region 264.0",
+        "source": "graph",
+        "ref": "query:get_customer_profile(customer_id=C09933)",
+        "entity_ids": [
+          "C09933"
+        ]
+      },
+      {
+        "claim": "Card C09933-K2: 2792 total transactions. Last 10 amounts: [$14.94, $48.03, $57.90, $107.91, $47.92, $47.98, $10.14, $176.02, $116.92, $47.96]",
+        "source": "graph",
+        "ref": "query:get_card_history(card_id=C09933-K2)",
+        "entity_ids": [
+          "C09933-K2"
+        ]
+      },
+      {
+        "claim": "Similar closed case CC-0104: confirmed_fraud (out_of_region_use), exposure $92.02. Case CC-0104: cardholder C09933 reported unrecognized activity on card C09933-K2. 1 transaction(s) b",
+        "source": "graph",
+        "ref": "query:find_similar_cases(pattern=, customer=C09933)",
+        "entity_ids": [
+          "CC-0104"
+        ]
+      },
+      {
+        "claim": "Similar closed case CC-0657: cleared (none), exposure $0.00. Case CC-0657: model scored a $1,769.94 transaction at 0.90. Cardholder confirmed the purchase. Amoun",
+        "source": "graph",
+        "ref": "query:find_similar_cases(pattern=, customer=C09933)",
+        "entity_ids": [
+          "CC-0657"
+        ]
+      },
+      {
+        "claim": "Similar closed case CC-0765: confirmed_fraud (out_of_region_use), exposure $1664.54. Case CC-0765: cardholder C09933 reported unrecognized activity on card C09933-K2. 13 transaction(s) ",
+        "source": "graph",
+        "ref": "query:find_similar_cases(pattern=, customer=C09933)",
+        "entity_ids": [
+          "CC-0765"
+        ]
+      },
+      {
+        "claim": "Similar closed case CC-1228: confirmed_fraud (account_takeover), exposure $1112.65. Case CC-1228: cardholder C09933 reported unrecognized activity on card C09933-K2. 10 transaction(s) ",
+        "source": "graph",
+        "ref": "query:find_similar_cases(pattern=, customer=C09933)",
+        "entity_ids": [
+          "CC-1228"
+        ]
+      },
+      {
+        "claim": "Similar closed case CC-1524: confirmed_fraud (account_takeover), exposure $3532.83. Case CC-1524: cardholder C09933 reported unrecognized activity on card C09933-K2. 14 transaction(s) ",
+        "source": "graph",
+        "ref": "query:find_similar_cases(pattern=, customer=C09933)",
+        "entity_ids": [
+          "CC-1524"
+        ]
+      }
+    ],
+    "similar_prior_cases": [
+      "CC-0104",
+      "CC-0657",
+      "CC-0765",
+      "CC-1228",
+      "CC-1524"
+    ],
+    "summary": "Case HHG-007 is classified as fraud with probability 0.90 for the sole affected transaction, 3514948: an in-person $111.92 Product W purchase scored 0.87 (query:get_transaction). No fraud pattern was identified—HHG-007 records Pattern: none and only transaction 3514948 as affected; its amount also falls within card C09933-K2’s recent $10.14–$176.02 range across 2,792 transactions (query:get_card_history). The decisive evidence was cardholder-reported unrecognized activity on the same card in confirmed-fraud cases CC-0104 and CC-0765 (out_of_region_use) and CC-1228 and CC-1524 (account_takeover), returned by query:find_similar_cases for customer C09933. Cleared case CC-0657 concerned a distinct, cardholder-confirmed $1,769.94 purchase and therefore did not establish authorization for transaction 3514948; no additional evidence was requested, so none changed the verdict.",
+    "written_to_graph": true,
+    "graph_case_id": "CASE-HHG-007"
+  },
+  "evidence_requests": [],
+  "next_best_actions": {
+    "initial": [
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "§3a: fraud probability 0.90 ≥ 0.3"
+      },
+      {
+        "action": "BLOCK_CARD",
+        "route": "L1",
+        "reason": "Fraud confirmed with high probability"
+      }
+    ],
+    "final": [
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "§3a: fraud probability 0.90 ≥ 0.3"
+      },
+      {
+        "action": "BLOCK_CARD",
+        "route": "L1",
+        "reason": "Fraud confirmed with high probability"
+      }
+    ],
+    "what_changed": "nothing"
+  },
+  "sar": {
+    "file": false,
+    "reason": "Filing not required: verdict is fraud with fraud probability 0.90. Exposure $111.92 below threshold and no shared device links.",
+    "narrative": "",
+    "subjects": [],
+    "total_amount_usd": 0,
+    "activity_dates": []
+  },
+  "stop_reason": "Fraud probability 0.90 ≥ 0.85 with 8 independent evidence pieces",
+  "tool_calls": 11,
+  "tokens": 0,
+  "latency_s": 232.1
+}

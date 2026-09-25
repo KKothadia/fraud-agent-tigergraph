@@ -1,0 +1,142 @@
+{
+  "case_id": "HHG-001",
+  "case": {
+    "status": "closed_fraud",
+    "verdict": "fraud",
+    "fraud_probability": 0.85,
+    "pattern": "out_of_region_use",
+    "pattern_description": "The flagged transaction 3514030 ($77.07) occurred in billing region 444.0, which differs from the customer's primary region (204.0) where their historical activity resides. This matches the out_of_region_use pattern seen in prior confirmed fraud cases CC-1066, CC-1673, CC-2964, and CC-3587, all involving card C12382-K1 and resulting in confirmed fraud.",
+    "affected_txn_ids": [
+      "3514030"
+    ],
+    "first_suspicious_txn_id": "3514030",
+    "connected_card_ids": [
+      "C12382-K1"
+    ],
+    "connected_device_profiles": [],
+    "exposure_usd": 77.07,
+    "evidence": [
+      {
+        "claim": "Flagged transaction 3514030: $77.07, channel=in_person, product=W, risk_score=0.61",
+        "source": "graph",
+        "ref": "query:get_transaction(txn_id=3514030)",
+        "entity_ids": [
+          "3514030"
+        ]
+      },
+      {
+        "claim": "Customer C12382: 422 total txns, avg $115.60, active 2016-07-06 14:47:52 to 2016-12-31 19:14:37, primary region 204.0",
+        "source": "graph",
+        "ref": "query:get_customer_profile(customer_id=C12382)",
+        "entity_ids": [
+          "C12382"
+        ]
+      },
+      {
+        "claim": "Card C12382-K1: 422 total transactions. Last 10 amounts: [$114.91, $14.99, $107.99, $55.08, $269.96, $424.93, $424.96, $36.00, $15.02, $76.97]",
+        "source": "graph",
+        "ref": "query:get_card_history(card_id=C12382-K1)",
+        "entity_ids": [
+          "C12382-K1"
+        ]
+      },
+      {
+        "claim": "Similar closed case CC-1066: confirmed_fraud (out_of_region_use), exposure $170.98. Case CC-1066: cardholder C12382 reported unrecognized activity on card C12382-K1. 1 transaction(s) b",
+        "source": "graph",
+        "ref": "query:find_similar_cases(pattern=, customer=C12382)",
+        "entity_ids": [
+          "CC-1066"
+        ]
+      },
+      {
+        "claim": "Similar closed case CC-1673: confirmed_fraud (card_not_present_new_device), exposure $199.98. Case CC-1673: cardholder C12382 reported unrecognized activity on card C12382-K1. 1 transaction(s) b",
+        "source": "graph",
+        "ref": "query:find_similar_cases(pattern=, customer=C12382)",
+        "entity_ids": [
+          "CC-1673"
+        ]
+      },
+      {
+        "claim": "Similar closed case CC-2964: confirmed_fraud (out_of_region_use), exposure $171.08. Case CC-2964: cardholder C12382 reported unrecognized activity on card C12382-K1. 1 transaction(s) b",
+        "source": "graph",
+        "ref": "query:find_similar_cases(pattern=, customer=C12382)",
+        "entity_ids": [
+          "CC-2964"
+        ]
+      },
+      {
+        "claim": "Similar closed case CC-3587: confirmed_fraud (out_of_region_use), exposure $49.09. Case CC-3587: cardholder C12382 reported unrecognized activity on card C12382-K1. 1 transaction(s) b",
+        "source": "graph",
+        "ref": "query:find_similar_cases(pattern=, customer=C12382)",
+        "entity_ids": [
+          "CC-3587"
+        ]
+      }
+    ],
+    "similar_prior_cases": [
+      "CC-1066",
+      "CC-1673",
+      "CC-2964",
+      "CC-3587"
+    ],
+    "summary": "Transaction 3514030 ($77.07, in-person, risk_score 0.61) was classified as out_of_region_use fraud with 0.85 probability after occurring outside customer C12382's primary region 204.0. The verdict was driven by four prior confirmed fraud cases on the same card C12382-K1 — CC-1066, CC-2964, and CC-3587 for out_of_region_use, plus CC-1673 for card_not_present_new_device — establishing a recurring fraud pattern for this cardholder. Policy rule §3a applies given the high probability and historical precedent. Recommended actions include case creation, L2 reporting, and L1 card blocking.",
+    "written_to_graph": true,
+    "graph_case_id": "CASE-HHG-001"
+  },
+  "evidence_requests": [],
+  "next_best_actions": {
+    "initial": [
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "§3a: fraud probability 0.85 ≥ 0.3"
+      },
+      {
+        "action": "FILE_REPORT",
+        "route": "L2",
+        "reason": "§3a: confirmed/strongly suspected fraud meets filing criteria"
+      },
+      {
+        "action": "BLOCK_CARD",
+        "route": "L1",
+        "reason": "Fraud confirmed with high probability"
+      }
+    ],
+    "final": [
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "§3a: fraud probability 0.85 ≥ 0.3"
+      },
+      {
+        "action": "FILE_REPORT",
+        "route": "L2",
+        "reason": "§3a: confirmed/strongly suspected fraud meets filing criteria"
+      },
+      {
+        "action": "BLOCK_CARD",
+        "route": "L1",
+        "reason": "Fraud confirmed with high probability"
+      }
+    ],
+    "what_changed": "nothing"
+  },
+  "sar": {
+    "file": true,
+    "reason": "§3a: confirmed/strongly suspected fraud meets filing criteria",
+    "narrative": "Customer C12382 (card C12382-K1) conducted a suspicious in-person transaction (ID 3514030) for $77.07 on 2016-12-04, flagged with a risk score of 0.61 for out-of-region use (product W). The transaction occurred outside the customer's primary region 204.0, deviating from the card's historical activity of 422 transactions averaging $115.60 since 2016-07-06. This pattern matches three prior confirmed fraud cases on the same card: CC-1066 ($170.98 exposure), CC-2964 ($171.08 exposure), and CC-3587 ($49.09 exposure), all involving out-of-region use reported as unrecognized by the cardholder. A fourth case, CC-1673 ($199.98 exposure), involved card-not-present fraud on a new device, further indicating compromise. The card's recent transaction history shows variable amounts, but the out-of-region in-person purchase is inconsistent with the customer's typical spending geography. Based on the recurring fraud pattern and deviation from normal behavior, the transaction was escalated: a case was auto-created (HHG-001), a Level 2 report filed, and the card blocked at Level 1. No connected devices were identified in this event. The activity is considered suspicious due to the repeated confirmed fraud on this card and the geographic anomaly.",
+    "subjects": [
+      "C12382",
+      "C12382-K1"
+    ],
+    "total_amount_usd": 77.07,
+    "activity_dates": [
+      "2016-12-04",
+      "2016-12-04"
+    ]
+  },
+  "stop_reason": "Further steps are unlikely to change the decision",
+  "tool_calls": 11,
+  "tokens": 0,
+  "latency_s": 113.6
+}

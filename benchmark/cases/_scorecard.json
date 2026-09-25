@@ -1,0 +1,700 @@
+{
+  "per_case": {
+    "HHG-001": {
+      "case_id": "HHG-001",
+      "total": 73.5,
+      "investigation": {
+        "score": 19.5,
+        "max": 25,
+        "notes": [
+          "Retrieved 4 prior case(s)"
+        ]
+      },
+      "next_best_action": {
+        "score": 19.0,
+        "max": 25,
+        "notes": [
+          "Rules cited: \u00a73a"
+        ]
+      },
+      "explainability": {
+        "score": 10.0,
+        "max": 10,
+        "notes": []
+      },
+      "agentic_design": {
+        "score": 10.0,
+        "max": 15,
+        "notes": [
+          "Moderate probability but no evidence requested"
+        ]
+      },
+      "completeness": {
+        "score": 15.0,
+        "max": 15,
+        "notes": []
+      }
+    },
+    "HHG-002": {
+      "case_id": "HHG-002",
+      "total": 68.5,
+      "investigation": {
+        "score": 13.5,
+        "max": 25,
+        "notes": [
+          "Retrieved 1 prior case(s)"
+        ]
+      },
+      "next_best_action": {
+        "score": 19.0,
+        "max": 25,
+        "notes": [
+          "Rules cited: \u00a73a"
+        ]
+      },
+      "explainability": {
+        "score": 10.0,
+        "max": 10,
+        "notes": []
+      },
+      "agentic_design": {
+        "score": 11.0,
+        "max": 15,
+        "notes": [
+          "Moderate probability but no evidence requested"
+        ]
+      },
+      "completeness": {
+        "score": 15.0,
+        "max": 15,
+        "notes": []
+      }
+    },
+    "HHG-003": {
+      "case_id": "HHG-003",
+      "total": 71.5,
+      "investigation": {
+        "score": 17.5,
+        "max": 25,
+        "notes": [
+          "Retrieved 5 prior case(s)"
+        ]
+      },
+      "next_best_action": {
+        "score": 19.0,
+        "max": 25,
+        "notes": [
+          "Rules cited: \u00a73a"
+        ]
+      },
+      "explainability": {
+        "score": 8.0,
+        "max": 10,
+        "notes": []
+      },
+      "agentic_design": {
+        "score": 12.0,
+        "max": 15,
+        "notes": [
+          "Moderate probability but no evidence requested"
+        ]
+      },
+      "completeness": {
+        "score": 15.0,
+        "max": 15,
+        "notes": []
+      }
+    },
+    "HHG-004": {
+      "case_id": "HHG-004",
+      "total": 76.5,
+      "investigation": {
+        "score": 19.5,
+        "max": 25,
+        "notes": [
+          "Retrieved 5 prior case(s)"
+        ]
+      },
+      "next_best_action": {
+        "score": 19.0,
+        "max": 25,
+        "notes": [
+          "Rules cited: \u00a73a"
+        ]
+      },
+      "explainability": {
+        "score": 8.0,
+        "max": 10,
+        "notes": []
+      },
+      "agentic_design": {
+        "score": 15.0,
+        "max": 15,
+        "notes": []
+      },
+      "completeness": {
+        "score": 15.0,
+        "max": 15,
+        "notes": []
+      }
+    },
+    "HHG-005": {
+      "case_id": "HHG-005",
+      "total": 75.5,
+      "investigation": {
+        "score": 16.5,
+        "max": 25,
+        "notes": [
+          "No pattern identified for non-legitimate case",
+          "Retrieved 3 prior case(s)"
+        ]
+      },
+      "next_best_action": {
+        "score": 19.0,
+        "max": 25,
+        "notes": [
+          "Rules cited: \u00a73a"
+        ]
+      },
+      "explainability": {
+        "score": 10.0,
+        "max": 10,
+        "notes": []
+      },
+      "agentic_design": {
+        "score": 15.0,
+        "max": 15,
+        "notes": []
+      },
+      "completeness": {
+        "score": 15.0,
+        "max": 15,
+        "notes": []
+      }
+    },
+    "HHG-006": {
+      "case_id": "HHG-006",
+      "total": 77.5,
+      "investigation": {
+        "score": 19.5,
+        "max": 25,
+        "notes": [
+          "Retrieved 5 prior case(s)"
+        ]
+      },
+      "next_best_action": {
+        "score": 19.0,
+        "max": 25,
+        "notes": [
+          "Rules cited: \u00a73a"
+        ]
+      },
+      "explainability": {
+        "score": 10.0,
+        "max": 10,
+        "notes": []
+      },
+      "agentic_design": {
+        "score": 14.0,
+        "max": 15,
+        "notes": []
+      },
+      "completeness": {
+        "score": 15.0,
+        "max": 15,
+        "notes": []
+      }
+    },
+    "HHG-007": {
+      "case_id": "HHG-007",
+      "total": 72.5,
+      "investigation": {
+        "score": 14.5,
+        "max": 25,
+        "notes": [
+          "No pattern identified for non-legitimate case",
+          "Retrieved 5 prior case(s)"
+        ]
+      },
+      "next_best_action": {
+        "score": 19.0,
+        "max": 25,
+        "notes": [
+          "Rules cited: \u00a73a"
+        ]
+      },
+      "explainability": {
+        "score": 10.0,
+        "max": 10,
+        "notes": []
+      },
+      "agentic_design": {
+        "score": 14.0,
+        "max": 15,
+        "notes": []
+      },
+      "completeness": {
+        "score": 15.0,
+        "max": 15,
+        "notes": []
+      }
+    },
+    "HHG-008": {
+      "case_id": "HHG-008",
+      "total": 74.5,
+      "investigation": {
+        "score": 16.5,
+        "max": 25,
+        "notes": [
+          "No pattern identified for non-legitimate case",
+          "Retrieved 5 prior case(s)"
+        ]
+      },
+      "next_best_action": {
+        "score": 19.0,
+        "max": 25,
+        "notes": [
+          "Rules cited: \u00a73a"
+        ]
+      },
+      "explainability": {
+        "score": 10.0,
+        "max": 10,
+        "notes": []
+      },
+      "agentic_design": {
+        "score": 14.0,
+        "max": 15,
+        "notes": []
+      },
+      "completeness": {
+        "score": 15.0,
+        "max": 15,
+        "notes": []
+      }
+    },
+    "HHG-009": {
+      "case_id": "HHG-009",
+      "total": 65.5,
+      "investigation": {
+        "score": 9.5,
+        "max": 25,
+        "notes": [
+          "No pattern identified for non-legitimate case",
+          "No prior cases retrieved"
+        ]
+      },
+      "next_best_action": {
+        "score": 19.0,
+        "max": 25,
+        "notes": [
+          "Rules cited: \u00a73a"
+        ]
+      },
+      "explainability": {
+        "score": 10.0,
+        "max": 10,
+        "notes": []
+      },
+      "agentic_design": {
+        "score": 12.0,
+        "max": 15,
+        "notes": [
+          "Moderate probability but no evidence requested"
+        ]
+      },
+      "completeness": {
+        "score": 15.0,
+        "max": 15,
+        "notes": []
+      }
+    },
+    "HHG-010": {
+      "case_id": "HHG-010",
+      "total": 78.5,
+      "investigation": {
+        "score": 19.5,
+        "max": 25,
+        "notes": [
+          "Retrieved 5 prior case(s)"
+        ]
+      },
+      "next_best_action": {
+        "score": 19.0,
+        "max": 25,
+        "notes": [
+          "Rules cited: R6"
+        ]
+      },
+      "explainability": {
+        "score": 10.0,
+        "max": 10,
+        "notes": []
+      },
+      "agentic_design": {
+        "score": 15.0,
+        "max": 15,
+        "notes": []
+      },
+      "completeness": {
+        "score": 15.0,
+        "max": 15,
+        "notes": []
+      }
+    },
+    "HHG-011": {
+      "case_id": "HHG-011",
+      "total": 76.5,
+      "investigation": {
+        "score": 19.5,
+        "max": 25,
+        "notes": [
+          "Retrieved 5 prior case(s)"
+        ]
+      },
+      "next_best_action": {
+        "score": 19.0,
+        "max": 25,
+        "notes": [
+          "Rules cited: \u00a73a"
+        ]
+      },
+      "explainability": {
+        "score": 10.0,
+        "max": 10,
+        "notes": []
+      },
+      "agentic_design": {
+        "score": 13.0,
+        "max": 15,
+        "notes": []
+      },
+      "completeness": {
+        "score": 15.0,
+        "max": 15,
+        "notes": []
+      }
+    },
+    "HHG-012": {
+      "case_id": "HHG-012",
+      "total": 72.5,
+      "investigation": {
+        "score": 16.5,
+        "max": 25,
+        "notes": [
+          "Retrieved 2 prior case(s)"
+        ]
+      },
+      "next_best_action": {
+        "score": 19.0,
+        "max": 25,
+        "notes": [
+          "Rules cited: R6"
+        ]
+      },
+      "explainability": {
+        "score": 10.0,
+        "max": 10,
+        "notes": []
+      },
+      "agentic_design": {
+        "score": 12.0,
+        "max": 15,
+        "notes": [
+          "Moderate probability but no evidence requested"
+        ]
+      },
+      "completeness": {
+        "score": 15.0,
+        "max": 15,
+        "notes": []
+      }
+    },
+    "HHG-013": {
+      "case_id": "HHG-013",
+      "total": 74.5,
+      "investigation": {
+        "score": 19.5,
+        "max": 25,
+        "notes": [
+          "Retrieved 4 prior case(s)"
+        ]
+      },
+      "next_best_action": {
+        "score": 19.0,
+        "max": 25,
+        "notes": [
+          "Rules cited: \u00a73a"
+        ]
+      },
+      "explainability": {
+        "score": 10.0,
+        "max": 10,
+        "notes": []
+      },
+      "agentic_design": {
+        "score": 11.0,
+        "max": 15,
+        "notes": [
+          "Moderate probability but no evidence requested"
+        ]
+      },
+      "completeness": {
+        "score": 15.0,
+        "max": 15,
+        "notes": []
+      }
+    },
+    "HHG-014": {
+      "case_id": "HHG-014",
+      "total": 70.5,
+      "investigation": {
+        "score": 14.5,
+        "max": 25,
+        "notes": [
+          "No prior cases retrieved"
+        ]
+      },
+      "next_best_action": {
+        "score": 19.0,
+        "max": 25,
+        "notes": [
+          "Rules cited: \u00a73a"
+        ]
+      },
+      "explainability": {
+        "score": 10.0,
+        "max": 10,
+        "notes": []
+      },
+      "agentic_design": {
+        "score": 12.0,
+        "max": 15,
+        "notes": [
+          "Moderate probability but no evidence requested"
+        ]
+      },
+      "completeness": {
+        "score": 15.0,
+        "max": 15,
+        "notes": []
+      }
+    },
+    "HHG-015": {
+      "case_id": "HHG-015",
+      "total": 74.5,
+      "investigation": {
+        "score": 19.5,
+        "max": 25,
+        "notes": [
+          "Retrieved 5 prior case(s)"
+        ]
+      },
+      "next_best_action": {
+        "score": 19.0,
+        "max": 25,
+        "notes": [
+          "Rules cited: R6"
+        ]
+      },
+      "explainability": {
+        "score": 10.0,
+        "max": 10,
+        "notes": []
+      },
+      "agentic_design": {
+        "score": 11.0,
+        "max": 15,
+        "notes": [
+          "Moderate probability but no evidence requested"
+        ]
+      },
+      "completeness": {
+        "score": 15.0,
+        "max": 15,
+        "notes": []
+      }
+    },
+    "HHG-016": {
+      "case_id": "HHG-016",
+      "total": 70.5,
+      "investigation": {
+        "score": 14.5,
+        "max": 25,
+        "notes": [
+          "No prior cases retrieved"
+        ]
+      },
+      "next_best_action": {
+        "score": 19.0,
+        "max": 25,
+        "notes": [
+          "Rules cited: \u00a73a"
+        ]
+      },
+      "explainability": {
+        "score": 10.0,
+        "max": 10,
+        "notes": []
+      },
+      "agentic_design": {
+        "score": 12.0,
+        "max": 15,
+        "notes": [
+          "Moderate probability but no evidence requested"
+        ]
+      },
+      "completeness": {
+        "score": 15.0,
+        "max": 15,
+        "notes": []
+      }
+    },
+    "HHG-017": {
+      "case_id": "HHG-017",
+      "total": 69.5,
+      "investigation": {
+        "score": 14.5,
+        "max": 25,
+        "notes": [
+          "No pattern identified for non-legitimate case",
+          "Retrieved 1 prior case(s)"
+        ]
+      },
+      "next_best_action": {
+        "score": 19.0,
+        "max": 25,
+        "notes": [
+          "Rules cited: \u00a73a"
+        ]
+      },
+      "explainability": {
+        "score": 10.0,
+        "max": 10,
+        "notes": []
+      },
+      "agentic_design": {
+        "score": 11.0,
+        "max": 15,
+        "notes": [
+          "Moderate probability but no evidence requested"
+        ]
+      },
+      "completeness": {
+        "score": 15.0,
+        "max": 15,
+        "notes": []
+      }
+    },
+    "HHG-018": {
+      "case_id": "HHG-018",
+      "total": 73.5,
+      "investigation": {
+        "score": 14.5,
+        "max": 25,
+        "notes": [
+          "No pattern identified for non-legitimate case",
+          "Retrieved 5 prior case(s)"
+        ]
+      },
+      "next_best_action": {
+        "score": 19.0,
+        "max": 25,
+        "notes": [
+          "Rules cited: \u00a73a"
+        ]
+      },
+      "explainability": {
+        "score": 10.0,
+        "max": 10,
+        "notes": []
+      },
+      "agentic_design": {
+        "score": 15.0,
+        "max": 15,
+        "notes": []
+      },
+      "completeness": {
+        "score": 15.0,
+        "max": 15,
+        "notes": []
+      }
+    },
+    "HHG-019": {
+      "case_id": "HHG-019",
+      "total": 77.5,
+      "investigation": {
+        "score": 19.5,
+        "max": 25,
+        "notes": [
+          "Retrieved 4 prior case(s)"
+        ]
+      },
+      "next_best_action": {
+        "score": 19.0,
+        "max": 25,
+        "notes": [
+          "Rules cited: \u00a73a"
+        ]
+      },
+      "explainability": {
+        "score": 10.0,
+        "max": 10,
+        "notes": []
+      },
+      "agentic_design": {
+        "score": 14.0,
+        "max": 15,
+        "notes": []
+      },
+      "completeness": {
+        "score": 15.0,
+        "max": 15,
+        "notes": []
+      }
+    },
+    "HHG-020": {
+      "case_id": "HHG-020",
+      "total": 74.5,
+      "investigation": {
+        "score": 18.5,
+        "max": 25,
+        "notes": [
+          "Retrieved 2 prior case(s)"
+        ]
+      },
+      "next_best_action": {
+        "score": 19.0,
+        "max": 25,
+        "notes": [
+          "Rules cited: R6"
+        ]
+      },
+      "explainability": {
+        "score": 10.0,
+        "max": 10,
+        "notes": []
+      },
+      "agentic_design": {
+        "score": 12.0,
+        "max": 15,
+        "notes": [
+          "Moderate probability but no evidence requested"
+        ]
+      },
+      "completeness": {
+        "score": 15.0,
+        "max": 15,
+        "notes": []
+      }
+    }
+  },
+  "average_total": 73.4,
+  "category_averages": {
+    "investigation": 16.9,
+    "next_best_action": 19.0,
+    "explainability": 9.8,
+    "agentic_design": 12.8,
+    "completeness": 15.0
+  }
+}

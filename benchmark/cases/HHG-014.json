@@ -1,0 +1,99 @@
+{
+  "case_id": "HHG-014",
+  "case": {
+    "status": "closed_legitimate",
+    "verdict": "uncertain",
+    "fraud_probability": 0.4,
+    "pattern": "card_not_present_new_device",
+    "pattern_description": "",
+    "affected_txn_ids": [
+      "3478561"
+    ],
+    "first_suspicious_txn_id": "3478561",
+    "connected_card_ids": [],
+    "connected_device_profiles": [
+      "SM-G935F Build/NRD90M | Android 7.0 | chrome 62.0 for android | 1920x1080"
+    ],
+    "exposure_usd": 74.96,
+    "evidence": [
+      {
+        "claim": "Flagged transaction 3478561: $74.96, channel=online, product=C, risk_score=0.05",
+        "source": "graph",
+        "ref": "query:get_transaction(txn_id=3478561)",
+        "entity_ids": [
+          "3478561"
+        ]
+      },
+      {
+        "claim": "Customer C13487: 85 total txns, avg $57.43, active 2016-07-04 19:14:19 to 2016-12-27 14:43:09, primary region 191.0",
+        "source": "graph",
+        "ref": "query:get_customer_profile(customer_id=C13487)",
+        "entity_ids": [
+          "C13487"
+        ]
+      },
+      {
+        "claim": "Card C13487-K1: 85 total transactions. Last 10 amounts: [$30.96, $30.87, $42.95, $35.96, $25.95, $31.02, $35.91, $20.98, $48.03, $57.89]",
+        "source": "graph",
+        "ref": "query:get_card_history(card_id=C13487-K1)",
+        "entity_ids": [
+          "C13487-K1"
+        ]
+      },
+      {
+        "claim": "Device profile for txn 3478561: SM-G935F Build/NRD90M | Android 7.0 | chrome 62.0 for android | 1920x1080. Device status: New. Proxy: IP_PROXY:ANONYMOUS",
+        "source": "graph",
+        "ref": "query:get_device_info(txn_id=3478561)",
+        "entity_ids": [
+          "3478561"
+        ]
+      },
+      {
+        "claim": "Device 'SM-G935F Build/NRD90M' also used by 130 other customer(s): ['C11923', 'C13147', 'C11687', 'C10645', 'C06663']",
+        "source": "graph",
+        "ref": "query:find_device_neighbors(device=SM-G935F Build/NRD90M)",
+        "entity_ids": [
+          "C11923",
+          "C13147",
+          "C11687",
+          "C10645",
+          "C06663"
+        ]
+      }
+    ],
+    "similar_prior_cases": [],
+    "summary": "Case HHG-014 (verdict uncertain, probability 0.40) identified the card_not_present_new_device fraud pattern, with $74.96 exposure from transaction 3478561 (ref: query:get_transaction(txn_id=3478561)). The transaction was flagged because the device profile for 3478561 shows a new SM‑G935F Android 7.0 device with an anonymous proxy (ref: query:get_device_info(txn_id=3478561)), and this device type is used by 130 other customers (ref: query:find_device_neighbors(device=SM‑G935F Build/NRD90M)). Customer C13487 has 85 total transactions averaging $57.43 and a primary region of 191.0 (ref: query:get_customer_profile(customer_id=C13487)), while card C13487‑K1 shows recent activity including $57.89 (ref: query:get_card_history(card_id=C13487‑K1)). These specific evidence points—new device, proxy, and the card’s transaction history—directly support the pattern finding and led to the uncertain verdict, with no additional evidence requests made.",
+    "written_to_graph": true,
+    "graph_case_id": "CASE-HHG-014"
+  },
+  "evidence_requests": [],
+  "next_best_actions": {
+    "initial": [
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "§3a: fraud probability 0.40 ≥ 0.3"
+      }
+    ],
+    "final": [
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "§3a: fraud probability 0.40 ≥ 0.3"
+      }
+    ],
+    "what_changed": "nothing"
+  },
+  "sar": {
+    "file": false,
+    "reason": "Filing not required: verdict is uncertain with fraud probability 0.40",
+    "narrative": "",
+    "subjects": [],
+    "total_amount_usd": 0,
+    "activity_dates": []
+  },
+  "stop_reason": "Further steps are unlikely to change the decision",
+  "tool_calls": 12,
+  "tokens": 0,
+  "latency_s": 36.6
+}

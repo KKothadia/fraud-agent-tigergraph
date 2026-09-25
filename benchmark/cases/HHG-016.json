@@ -1,0 +1,137 @@
+{
+  "case_id": "HHG-016",
+  "case": {
+    "status": "closed_fraud",
+    "verdict": "fraud",
+    "fraud_probability": 0.9,
+    "pattern": "none",
+    "pattern_description": "",
+    "affected_txn_ids": [
+      "3534820"
+    ],
+    "first_suspicious_txn_id": "3534820",
+    "connected_card_ids": [],
+    "connected_device_profiles": [
+      "Windows | edge 16.0"
+    ],
+    "exposure_usd": 59.67,
+    "evidence": [
+      {
+        "claim": "Flagged transaction 3534820: $59.67, channel=online, product=C, risk_score=0.37",
+        "source": "graph",
+        "ref": "query:get_transaction(txn_id=3534820)",
+        "entity_ids": [
+          "3534820"
+        ]
+      },
+      {
+        "claim": "Customer C09988: 61 total txns, avg $41.81, active 2016-07-06 19:02:49 to 2016-12-24 19:28:38, primary region 100.0",
+        "source": "graph",
+        "ref": "query:get_customer_profile(customer_id=C09988)",
+        "entity_ids": [
+          "C09988"
+        ]
+      },
+      {
+        "claim": "Card C09988-K1: 61 total transactions. Last 10 amounts: [$52.36, $79.89, $17.16, $17.13, $88.04, $24.54, $19.95, $29.58, $134.97, $51.65]",
+        "source": "graph",
+        "ref": "query:get_card_history(card_id=C09988-K1)",
+        "entity_ids": [
+          "C09988-K1"
+        ]
+      },
+      {
+        "claim": "Device profile for txn 3534820: Windows | edge 16.0. Device status: New. Proxy: none",
+        "source": "graph",
+        "ref": "query:get_device_info(txn_id=3534820)",
+        "entity_ids": [
+          "3534820"
+        ]
+      },
+      {
+        "claim": "Device 'Windows' also used by 4845 other customer(s): ['C03036', 'C01618', 'C11923', 'C10878', 'C03102']",
+        "source": "graph",
+        "ref": "query:find_device_neighbors(device=Windows)",
+        "entity_ids": [
+          "C03036",
+          "C01618",
+          "C11923",
+          "C10878",
+          "C03102"
+        ]
+      },
+      {
+        "claim": "Customer states they did not make this purchase and did not authorize anyone to use their card. Customer still has the physical card in their possession.",
+        "source": "customer",
+        "ref": "evidence_request:1",
+        "entity_ids": []
+      }
+    ],
+    "similar_prior_cases": [],
+    "summary": "Customer C09988 reported an unrecognized transaction ($59.67, online) on card C09988-K1. Key evidence: Flagged transaction 3534820: $59.67, channel=online, product=C, risk_score=0.37 Evidence requested (customer_validation): Customer states they did not make this purchase and did not authorize anyone to  Verdict: fraud (fraud probability 0.90).",
+    "written_to_graph": true,
+    "graph_case_id": "CASE-HHG-016"
+  },
+  "evidence_requests": [
+    {
+      "type": "customer_validation",
+      "asked_after_step": 4,
+      "assumed_response": "Customer states they did not make this purchase and did not authorize anyone to use their card. Customer still has the physical card in their possession."
+    }
+  ],
+  "next_best_actions": {
+    "initial": [
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "§3a: fraud probability 0.70 ≥ 0.3"
+      },
+      {
+        "action": "FILE_REPORT",
+        "route": "L2",
+        "reason": "§3a: confirmed/strongly suspected fraud meets filing criteria"
+      },
+      {
+        "action": "BLOCK_CARD",
+        "route": "L1",
+        "reason": "Fraud confirmed with high probability"
+      }
+    ],
+    "final": [
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "§3a: fraud probability 0.90 ≥ 0.3"
+      },
+      {
+        "action": "FILE_REPORT",
+        "route": "L2",
+        "reason": "§3a: confirmed/strongly suspected fraud meets filing criteria"
+      },
+      {
+        "action": "BLOCK_CARD",
+        "route": "L1",
+        "reason": "Fraud confirmed with high probability"
+      }
+    ],
+    "what_changed": "Fraud probability updated to 0.90"
+  },
+  "sar": {
+    "file": true,
+    "reason": "§3a: confirmed/strongly suspected fraud meets filing criteria",
+    "narrative": "On 2016-12-11 22:39:08, card C09988-K1 belonging to customer C09988 was used for a online transaction of $59.67. A total of 1 transaction(s) were identified as part of this fraud episode, totaling $59.67. The following device profile(s) link this activity: Windows | edge 16.0. Customer response: Customer states they did not make this purchase and did not authorize anyone to use their card. Customer still has the physical card in their possession. Recommended actions: CREATE_CASE, FILE_REPORT, BLOCK_CARD.",
+    "subjects": [
+      "C09988",
+      "C09988-K1"
+    ],
+    "total_amount_usd": 59.67,
+    "activity_dates": [
+      "2016-12-11",
+      "2016-12-11"
+    ]
+  },
+  "stop_reason": "Verification response settled the question",
+  "tool_calls": 12,
+  "tokens": 0,
+  "latency_s": 16.4
+}

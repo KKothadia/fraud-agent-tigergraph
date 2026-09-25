@@ -1,0 +1,153 @@
+{
+  "case_id": "HHG-005",
+  "case": {
+    "status": "closed_fraud",
+    "verdict": "fraud",
+    "fraud_probability": 0.7,
+    "pattern": "account_takeover",
+    "pattern_description": "",
+    "affected_txn_ids": [
+      "3523199"
+    ],
+    "first_suspicious_txn_id": "3523199",
+    "connected_card_ids": [],
+    "connected_device_profiles": [
+      "iOS Device | iOS 9.3.5 | mobile safari 9.0 | 1024x768"
+    ],
+    "exposure_usd": 100.07,
+    "evidence": [
+      {
+        "claim": "Flagged transaction 3523199: $100.07, channel=online, product=R, risk_score=0.54",
+        "source": "graph",
+        "ref": "query:get_transaction(txn_id=3523199)",
+        "entity_ids": [
+          "3523199"
+        ]
+      },
+      {
+        "claim": "Customer C02923: 92 total txns, avg $176.02, active 2016-07-02 16:06:18 to 2016-12-10 23:28:09, primary region 330.0",
+        "source": "graph",
+        "ref": "query:get_customer_profile(customer_id=C02923)",
+        "entity_ids": [
+          "C02923"
+        ]
+      },
+      {
+        "claim": "Card C02923-K1: 92 total transactions. Last 10 amounts: [$141.08, $130.41, $141.07, $117.09, $116.96, $117.01, $117.07, $116.96, $100.07, $117.07]",
+        "source": "graph",
+        "ref": "query:get_card_history(card_id=C02923-K1)",
+        "entity_ids": [
+          "C02923-K1"
+        ]
+      },
+      {
+        "claim": "Device profile for txn 3523199: iOS Device | iOS 9.3.5 | mobile safari 9.0 | 1024x768. Device status: New. Proxy: none",
+        "source": "graph",
+        "ref": "query:get_device_info(txn_id=3523199)",
+        "entity_ids": [
+          "3523199"
+        ]
+      },
+      {
+        "claim": "Device 'iOS Device' also used by 3103 other customer(s): ['C03036', 'C08080', 'C09667', 'C09131', 'C01618']",
+        "source": "graph",
+        "ref": "query:find_device_neighbors(device=iOS Device)",
+        "entity_ids": [
+          "C03036",
+          "C08080",
+          "C09667",
+          "C09131",
+          "C01618"
+        ]
+      },
+      {
+        "claim": "Similar closed case CC-2400: confirmed_fraud (account_takeover), exposure $350.99. Case CC-2400: cardholder C02923 reported unrecognized activity on card C02923-K1. 3 transaction(s) b",
+        "source": "graph",
+        "ref": "query:find_similar_cases(pattern=, customer=C02923)",
+        "entity_ids": [
+          "CC-2400"
+        ]
+      },
+      {
+        "claim": "Similar closed case CC-2717: confirmed_fraud (account_takeover), exposure $896.08. Case CC-2717: cardholder C02923 reported unrecognized activity on card C02923-K1. 6 transaction(s) b",
+        "source": "graph",
+        "ref": "query:find_similar_cases(pattern=, customer=C02923)",
+        "entity_ids": [
+          "CC-2717"
+        ]
+      },
+      {
+        "claim": "Similar closed case CC-2857: confirmed_fraud (account_takeover), exposure $539.97. Case CC-2857: cardholder C02923 reported unrecognized activity on card C02923-K1. 2 transaction(s) b",
+        "source": "graph",
+        "ref": "query:find_similar_cases(pattern=, customer=C02923)",
+        "entity_ids": [
+          "CC-2857"
+        ]
+      }
+    ],
+    "similar_prior_cases": [
+      "CC-2400",
+      "CC-2717",
+      "CC-2857"
+    ],
+    "summary": "Case HHG-005 resulted in a fraud verdict (probability 0.70) driven by an account takeover pattern affecting transaction 3523199 ($100.07). The transaction originated from a new iOS device (iOS 9.3.5, mobile safari 9.0, 1024x768) that is shared across 3,103 other customer profiles, indicating unauthorized access. This is further corroborated by three similar closed cases (CC-2400, CC-2717, CC-2857) where cardholder C02923 reported unrecognized activity on card C02923-K1. Additionally, the $100.07 charge deviates from C02923's historical average of $176.02 across 92 total transactions on that card.",
+    "written_to_graph": true,
+    "graph_case_id": "CASE-HHG-005"
+  },
+  "evidence_requests": [],
+  "next_best_actions": {
+    "initial": [
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "§3a: fraud probability 0.70 ≥ 0.3"
+      },
+      {
+        "action": "FILE_REPORT",
+        "route": "L2",
+        "reason": "§3a: confirmed/strongly suspected fraud meets filing criteria"
+      },
+      {
+        "action": "BLOCK_CARD",
+        "route": "L1",
+        "reason": "Fraud confirmed with high probability"
+      }
+    ],
+    "final": [
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "§3a: fraud probability 0.70 ≥ 0.3"
+      },
+      {
+        "action": "FILE_REPORT",
+        "route": "L2",
+        "reason": "§3a: confirmed/strongly suspected fraud meets filing criteria"
+      },
+      {
+        "action": "BLOCK_CARD",
+        "route": "L1",
+        "reason": "Fraud confirmed with high probability"
+      }
+    ],
+    "what_changed": "nothing"
+  },
+  "sar": {
+    "file": true,
+    "reason": "§3a: confirmed/strongly suspected fraud meets filing criteria",
+    "narrative": "On December 7, 2016, customer C02923 initiated a suspicious online transaction of $100.07 (Transaction ID 3523199) on card C02923-K1. This transaction is highly anomalous as it falls below the customer's average transaction amount of $176.02 and recent transaction history, which typically ranges between $116.96 and $141.08. The transaction originated from a newly registered device profile running iOS 9.3.5 on mobile Safari with a 1024x768 resolution, which is notably shared among 3,103 other customers, indicating potential fraud infrastructure. The transaction carried a risk score of 0.54 and was processed through the online channel in primary region 330.0. This activity aligns with a confirmed account takeover pattern, as customer C02923 has a history of prior fraudulent activity on this same card, including closed cases CC-2400 ($350.99 exposure), CC-2717 ($896.08 exposure), and CC-2857 ($539.97 exposure). Consequently, an automated case (HHG-005) was created, a Level 2 report was filed, and the card was blocked at the Level 1 threshold to prevent further unauthorized access.",
+    "subjects": [
+      "C02923",
+      "C02923-K1"
+    ],
+    "total_amount_usd": 100.07,
+    "activity_dates": [
+      "2016-12-07",
+      "2016-12-07"
+    ]
+  },
+  "stop_reason": "Further steps are unlikely to change the decision",
+  "tool_calls": 12,
+  "tokens": 0,
+  "latency_s": 61.6
+}

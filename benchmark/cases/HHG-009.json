@@ -1,0 +1,124 @@
+{
+  "case_id": "HHG-009",
+  "case": {
+    "status": "closed_legitimate",
+    "verdict": "legitimate",
+    "fraud_probability": 0.35,
+    "pattern": "none",
+    "pattern_description": "",
+    "affected_txn_ids": [
+      "3581141",
+      "3586980",
+      "3587042",
+      "3587043",
+      "3588859",
+      "3588874",
+      "3588876",
+      "3588905",
+      "3588919",
+      "3588950"
+    ],
+    "first_suspicious_txn_id": "3581141",
+    "connected_card_ids": [
+      "C08299-K1"
+    ],
+    "connected_device_profiles": [
+      "id_15"
+    ],
+    "exposure_usd": 390.24,
+    "evidence": [
+      {
+        "claim": "Flagged transaction 3581141: $30.02, channel=online, product=S, risk_score=0.28",
+        "source": "graph",
+        "ref": "query:get_transaction(txn_id=3581141)",
+        "entity_ids": [
+          "3581141"
+        ]
+      },
+      {
+        "claim": "Customer C08299: 56 total txns, avg $61.17, active 2016-07-04 20:30:37 to 2016-12-31 14:01:58, primary region 330.0",
+        "source": "graph",
+        "ref": "query:get_customer_profile(customer_id=C08299)",
+        "entity_ids": [
+          "C08299"
+        ]
+      },
+      {
+        "claim": "Card C08299-K1: 56 total transactions. Last 10 amounts: [$30.02, $20.01, $20.02, $20.08, $49.97, $49.96, $50.08, $49.92, $50.09, $50.09]",
+        "source": "graph",
+        "ref": "query:get_card_history(card_id=C08299-K1)",
+        "entity_ids": [
+          "C08299-K1"
+        ]
+      },
+      {
+        "claim": "Device profile for txn 3581141: . Device status: Found. Proxy: none",
+        "source": "graph",
+        "ref": "query:get_device_info(txn_id=3581141)",
+        "entity_ids": [
+          "3581141"
+        ]
+      }
+    ],
+    "similar_prior_cases": [],
+    "summary": "Case HHG-009 was closed as legitimate with reported probability 0.35 under policy rule R6.  \nNo fraud pattern was identified across the affected transactions, including flagged transaction 3581141 for $30.02, because customer C08299 had 56 total transactions and card C08299-K1 had 56 total transactions.  \nKey evidence driving the verdict was transaction 3581141’s low risk score of 0.28, its device profile being found with no proxy, and card C08299-K1’s recent history including $30.02, $20.01, $20.02, $20.08, $49.97, $49.96, $50.08, $49.92, $50.09, and $50.09.  \nNo evidence requests were made, so no additional evidence changed the assessment.",
+    "written_to_graph": true,
+    "graph_case_id": "CASE-HHG-009"
+  },
+  "evidence_requests": [],
+  "next_best_actions": {
+    "initial": [
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "R6: shared device profile 'id_15' across multiple cards"
+      },
+      {
+        "action": "FILE_REPORT",
+        "route": "L2",
+        "reason": "R6: shared device profile links fraud across cards"
+      },
+      {
+        "action": "MONITOR_CONNECTED_CARDS",
+        "route": "auto",
+        "reason": "R6: monitor all cards sharing device profile 'id_15'"
+      }
+    ],
+    "final": [
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "R6: shared device profile 'id_15' across multiple cards"
+      },
+      {
+        "action": "FILE_REPORT",
+        "route": "L2",
+        "reason": "R6: shared device profile links fraud across cards"
+      },
+      {
+        "action": "MONITOR_CONNECTED_CARDS",
+        "route": "auto",
+        "reason": "R6: monitor all cards sharing device profile 'id_15'"
+      }
+    ],
+    "what_changed": "nothing"
+  },
+  "sar": {
+    "file": true,
+    "reason": "R6: shared device profile links fraud across cards",
+    "narrative": "Customer C08299, using card C08299-K1, was reviewed for suspicious activity totaling $390.24 from 2016-12-28 through 2016-12-31. The activity involved online transactions, including flagged transaction 3581141 for $30.02 on product S with risk score 0.28; merchant names and individual transaction timestamps were not provided in the available evidence. Customer C08299 had 56 total transactions averaging $61.17, with account activity from 2016-07-04 20:30:37 to 2016-12-31 14:01:58 and primary region 330.0. Card C08299-K1 also had 56 total transactions, and the last 10 reviewed amounts were $30.02, $20.01, $20.02, $20.08, $49.97, $49.96, $50.08, $49.92, $50.09, and $50.09, totaling $390.24. The connected device was id_15; device status was found and no proxy was indicated, while no specific device location was provided. The reviewed activity occurred through the online channel and was associated with primary region 330.0; no in-person activity or merchant details were identified in the provided evidence. The activity is suspicious because transaction 3581141 was flagged for review and the recent card history shows a concentrated series of transactions clustered around $20 and $50 during the activity period, despite no formal pattern assignment and no prior related cases. Actions taken were automatic case creation, filing of the report at L2, and automatic monitoring of connected cards; no prior related cases were identified.",
+    "subjects": [
+      "C08299",
+      "C08299-K1"
+    ],
+    "total_amount_usd": 390.24,
+    "activity_dates": [
+      "2016-12-28",
+      "2016-12-31"
+    ]
+  },
+  "stop_reason": "Further steps are unlikely to change the decision",
+  "tool_calls": 11,
+  "tokens": 0,
+  "latency_s": 344.1
+}

@@ -1,0 +1,107 @@
+{
+  "case_id": "HHG-017",
+  "case": {
+    "status": "closed_legitimate",
+    "verdict": "uncertain",
+    "fraud_probability": 0.48,
+    "pattern": "none",
+    "pattern_description": "",
+    "affected_txn_ids": [],
+    "first_suspicious_txn_id": "",
+    "connected_card_ids": [],
+    "connected_device_profiles": [
+      "Windows | Windows 10 | chrome 65.0 | 1920x1080"
+    ],
+    "exposure_usd": 0.0,
+    "evidence": [
+      {
+        "claim": "Flagged transaction 3450629: $100.09, channel=online, product=R, risk_score=0.57",
+        "source": "graph",
+        "ref": "query:get_transaction(txn_id=3450629)",
+        "entity_ids": [
+          "3450629"
+        ]
+      },
+      {
+        "claim": "Customer C04570: 59 total txns, avg $342.87, active 2016-07-17 18:08:09 to 2016-12-25 01:27:48, primary region 299.0",
+        "source": "graph",
+        "ref": "query:get_customer_profile(customer_id=C04570)",
+        "entity_ids": [
+          "C04570"
+        ]
+      },
+      {
+        "claim": "Card C04570-K1: 59 total transactions. Last 10 amounts: [$99.94, $100.09, $99.96, $100.09, $249.98, $250.03, $249.92, $249.93, $199.94, $200.02]",
+        "source": "graph",
+        "ref": "query:get_card_history(card_id=C04570-K1)",
+        "entity_ids": [
+          "C04570-K1"
+        ]
+      },
+      {
+        "claim": "Device profile for txn 3450629: Windows | Windows 10 | chrome 65.0 | 1920x1080. Device status: Found. Proxy: IP_PROXY:HIDDEN",
+        "source": "graph",
+        "ref": "query:get_device_info(txn_id=3450629)",
+        "entity_ids": [
+          "3450629"
+        ]
+      },
+      {
+        "claim": "Device 'Windows' also used by 4845 other customer(s): ['C03036', 'C01618', 'C11923', 'C10878', 'C03102']",
+        "source": "graph",
+        "ref": "query:find_device_neighbors(device=Windows)",
+        "entity_ids": [
+          "C03036",
+          "C01618",
+          "C11923",
+          "C10878",
+          "C03102"
+        ]
+      },
+      {
+        "claim": "Similar closed case CC-1383: cleared (none), exposure $0.00. Case CC-1383: model scored a $99.98 transaction at 0.91. Cardholder confirmed travel to the billing ",
+        "source": "graph",
+        "ref": "query:find_similar_cases(pattern=, customer=C04570)",
+        "entity_ids": [
+          "CC-1383"
+        ]
+      }
+    ],
+    "similar_prior_cases": [
+      "CC-1383"
+    ],
+    "summary": "Risk model flagged transaction 3450629 at score 0.57 ($100.09, online) on card C04570-K1. Key evidence: Flagged transaction 3450629: $100.09, channel=online, product=R, risk_score=0.57 Similar prior case(s) retrieved: CC-1383. Verdict: uncertain (fraud probability 0.48).",
+    "written_to_graph": true,
+    "graph_case_id": "CASE-HHG-017"
+  },
+  "evidence_requests": [],
+  "next_best_actions": {
+    "initial": [
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "§3a: fraud probability 0.48 ≥ 0.3"
+      }
+    ],
+    "final": [
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "§3a: fraud probability 0.48 ≥ 0.3"
+      }
+    ],
+    "what_changed": "nothing"
+  },
+  "sar": {
+    "file": false,
+    "reason": "Filing not required: verdict is uncertain with fraud probability 0.48",
+    "narrative": "",
+    "subjects": [],
+    "total_amount_usd": 0,
+    "activity_dates": []
+  },
+  "stop_reason": "Further steps are unlikely to change the decision",
+  "tool_calls": 12,
+  "tokens": 0,
+  "latency_s": 7.9
+}

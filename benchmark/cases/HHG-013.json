@@ -1,0 +1,164 @@
+{
+  "case_id": "HHG-013",
+  "case": {
+    "status": "escalated",
+    "verdict": "uncertain",
+    "fraud_probability": 0.7,
+    "pattern": "card_not_present_new_device",
+    "pattern_description": "",
+    "affected_txn_ids": [
+      "3526826"
+    ],
+    "first_suspicious_txn_id": "3526826",
+    "connected_card_ids": [
+      "C07671-K2"
+    ],
+    "connected_device_profiles": [
+      "Windows | chrome 66.0"
+    ],
+    "exposure_usd": 35.66,
+    "evidence": [
+      {
+        "claim": "Flagged transaction 3526826: $35.66, channel=online, product=C, risk_score=0.76",
+        "source": "graph",
+        "ref": "query:get_transaction(txn_id=3526826)",
+        "entity_ids": [
+          "3526826"
+        ]
+      },
+      {
+        "claim": "Customer C07671: 1569 total txns, avg $112.42, active 2016-07-02 14:58:42 to 2016-12-28 23:51:58, primary region 264.0",
+        "source": "graph",
+        "ref": "query:get_customer_profile(customer_id=C07671)",
+        "entity_ids": [
+          "C07671"
+        ]
+      },
+      {
+        "claim": "Card C07671-K2: 1569 total transactions. Last 10 amounts: [$225.98, $57.86, $31.00, $311.94, $57.95, $159.87, $43.02, $42.94, $1660.00, $107.90]",
+        "source": "graph",
+        "ref": "query:get_card_history(card_id=C07671-K2)",
+        "entity_ids": [
+          "C07671-K2"
+        ]
+      },
+      {
+        "claim": "Device profile for txn 3526826: Windows | chrome 66.0. Device status: New. Proxy: none",
+        "source": "graph",
+        "ref": "query:get_device_info(txn_id=3526826)",
+        "entity_ids": [
+          "3526826"
+        ]
+      },
+      {
+        "claim": "Device 'Windows' also used by 4845 other customer(s): ['C03036', 'C01618', 'C11923', 'C10878', 'C03102']",
+        "source": "graph",
+        "ref": "query:find_device_neighbors(device=Windows)",
+        "entity_ids": [
+          "C03036",
+          "C01618",
+          "C11923",
+          "C10878",
+          "C03102"
+        ]
+      },
+      {
+        "claim": "Similar closed case CC-1475: confirmed_fraud (account_takeover), exposure $1307.98. Case CC-1475: cardholder C07671 reported unrecognized activity on card C07671-K2. 10 transaction(s) ",
+        "source": "graph",
+        "ref": "query:find_similar_cases(pattern=, customer=C07671)",
+        "entity_ids": [
+          "CC-1475"
+        ]
+      },
+      {
+        "claim": "Similar closed case CC-3216: confirmed_fraud (card_not_present_new_device), exposure $449.97. Case CC-3216: cardholder C07671 reported unrecognized activity on card C07671-K2. 3 transaction(s) b",
+        "source": "graph",
+        "ref": "query:find_similar_cases(pattern=, customer=C07671)",
+        "entity_ids": [
+          "CC-3216"
+        ]
+      },
+      {
+        "claim": "Similar closed case CC-3761: cleared (none), exposure $0.00. Case CC-3761: model scored a $3,891.01 transaction at 0.89. Cardholder confirmed the purchase. Amoun",
+        "source": "graph",
+        "ref": "query:find_similar_cases(pattern=, customer=C07671)",
+        "entity_ids": [
+          "CC-3761"
+        ]
+      },
+      {
+        "claim": "Similar closed case CC-4294: confirmed_fraud (account_takeover), exposure $506.01. Case CC-4294: cardholder C07671 reported unrecognized activity on card C07671-K2. 2 transaction(s) b",
+        "source": "graph",
+        "ref": "query:find_similar_cases(pattern=, customer=C07671)",
+        "entity_ids": [
+          "CC-4294"
+        ]
+      }
+    ],
+    "similar_prior_cases": [
+      "CC-1475",
+      "CC-3216",
+      "CC-3761",
+      "CC-4294"
+    ],
+    "summary": "Transaction 3526826 ($35.66, online channel, product C, risk_score 0.76) was flagged under the card_not_present_new_device pattern using a new Windows Chrome 66.0 device with no proxy (ref: query:get_transaction, query:get_device_info). Customer C07671 has a history of confirmed fraud on card C07671-K2 across three prior cases (CC-1475: account_takeover $1,307.98; CC-3216: card_not_present_new_device $449.97; CC-4294: account_takeover $506.01), though one similar case (CC-3761) was cleared after cardholder confirmation (ref: query:find_similar_cases). The Windows device is shared by 4,845 other customers, limiting its discriminatory value (ref: query:find_device_neighbors). Policy rule R6 triggered an uncertain verdict at 0.70 probability with recommendations to create a case, file an L2 report, and monitor connected cards. No additional evidence was requested.",
+    "written_to_graph": true,
+    "graph_case_id": "CASE-HHG-013"
+  },
+  "evidence_requests": [],
+  "next_best_actions": {
+    "initial": [
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "R6: shared device profile 'Windows | chrome 66.0' across multiple cards"
+      },
+      {
+        "action": "FILE_REPORT",
+        "route": "L2",
+        "reason": "R6: shared device profile links fraud across cards"
+      },
+      {
+        "action": "MONITOR_CONNECTED_CARDS",
+        "route": "auto",
+        "reason": "R6: monitor all cards sharing device profile 'Windows | chrome 66.0'"
+      }
+    ],
+    "final": [
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "R6: shared device profile 'Windows | chrome 66.0' across multiple cards"
+      },
+      {
+        "action": "FILE_REPORT",
+        "route": "L2",
+        "reason": "R6: shared device profile links fraud across cards"
+      },
+      {
+        "action": "MONITOR_CONNECTED_CARDS",
+        "route": "auto",
+        "reason": "R6: monitor all cards sharing device profile 'Windows | chrome 66.0'"
+      }
+    ],
+    "what_changed": "nothing"
+  },
+  "sar": {
+    "file": true,
+    "reason": "R6: shared device profile links fraud across cards",
+    "narrative": "Customer C07671 was flagged for one card-not-present online transaction, txn 3526826, for $35.66 in product C on 2016-12-09; the merchant name and exact transaction time were not provided. The transaction used connected card C07671-K2 through a newly registered Windows device running Chrome 66.0, with no proxy, and received a risk score of 0.76. The customer profile lists 1,569 transactions from 2016-07-02 14:58:42 through 2016-12-28 23:51:58 at an average amount of $112.42, while the ten most recent listed amounts ranged from $31.00 to $1,660.00. The profile identified primary region 264.0, but no separate billing-region or device-location data was supplied. The “Windows” device was also associated with 4,845 other customer accounts, including C03036, C01618, C11923, C10878, and C03102. This activity followed prior closed cases involving C07671-K2: CC-1475 and CC-4294 were confirmed account-takeover fraud involving reported unrecognized activity, CC-3216 was confirmed card-not-present-new-device fraud involving reported unrecognized activity, and CC-3761 was cleared. The new-device online usage, broad sharing of the device across customer accounts, and recurrence of the same fraud pattern on this card are suspicious in the context of the customer’s established history. Actions taken were CREATE_CASE(auto), FILE_REPORT(L2), and MONITOR_CONNECTED_CARDS(auto).",
+    "subjects": [
+      "C07671",
+      "C07671-K2"
+    ],
+    "total_amount_usd": 35.66,
+    "activity_dates": [
+      "2016-12-09",
+      "2016-12-09"
+    ]
+  },
+  "stop_reason": "Further steps are unlikely to change the decision",
+  "tool_calls": 12,
+  "tokens": 0,
+  "latency_s": 57.3
+}
